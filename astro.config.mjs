@@ -9,6 +9,11 @@ export default defineConfig({
   integrations: [svelte()],
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    build: {
+      rollupOptions: {
+        external: ['/pagefind/pagefind.js']
+      }
+    }
   }
 });

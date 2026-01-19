@@ -1,37 +1,43 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import StoryFilter from '../components/StoryFilter.svelte';
-import '../styles/global.css';
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import StoryFilter from "../components/StoryFilter.svelte";
+import "../styles/global.css";
 
 // 1. שליפת כל המידע (כולל הטקסט הכבד)
-const allStoriesRaw = await getCollection('stories');
+const allStoriesRaw = await getCollection("stories");
 
 // 2. אופטימיזציה: יצירת מערך "רזה" שכולל רק מטא-דאטה
 // אנחנו משמיטים בכוונה את body ואת render
-const lightweightStories = allStoriesRaw.map(story => ({
-    slug: story.slug,
+const lightweightStories = allStoriesRaw.map((story) => ({
+    // Flatten the slug: remove the folder path (year) if present
+    slug: story.slug.split("/").pop(),
     data: {
         title: story.data.title,
         author: story.data.author,
         date: story.data.date,
         tags: story.data.tags,
+        categories: story.data.categories,
         // אם יש עוד שדות שאתה משתמש בהם בפילטר - תוסיף אותם כאן
         // אבל אל תוסיף את body!
-    }
+    },
 }));
 
 // 3. מיון לפי תאריך
-const sortedStories = lightweightStories.sort((a, b) => 
-    new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+const sortedStories = lightweightStories.sort(
+    (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf(),
 );
 ---
 
 <Layout title="ארכיון הסיפורים">
     <div class="py-6">
-        <h1 class="text-3xl font-bold text-center mb-2 text-indigo-800">ארכיון הסיפורים</h1>
-        <p class="text-center text-gray-600 mb-8">מאגר של {sortedStories.length} סיפורים</p>
-        
+        <h1 class="text-3xl font-bold text-center mb-2 text-indigo-800">
+            ארכיון הסיפורים
+        </h1>
+        <p class="text-center text-gray-600 mb-8">
+            מאגר של {sortedStories.length} סיפורים
+        </p>
+
         <StoryFilter client:load allStories={sortedStories} />
     </div>
 </Layout>
