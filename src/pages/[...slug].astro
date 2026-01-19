@@ -1,7 +1,7 @@
 ---
 // src/pages/stories/[...slug].astro
 import { getCollection } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../layouts/Layout.astro";
 
 export async function getStaticPaths() {
   const stories = await getCollection("stories");
@@ -31,7 +31,7 @@ const githubUrl = `https://github.com/Mdanniyel/stories/blob/main/src/content/st
       </h1>
       <div class="flex flex-wrap gap-4 text-sm text-gray-500">
         <a
-          href=`/?author=${entry.data.author}`
+          href=`/stories/?author=${entry.data.author}`
           on:click|stopPropagation
           class="hover:text-indigo-600 hover:underline z-10"
           data-pagefind-meta="author"
@@ -61,14 +61,13 @@ const githubUrl = `https://github.com/Mdanniyel/stories/blob/main/src/content/st
             ))
         }
 
-        {/* Index Categories */}
+        {/* Index Category */}
         {
-          entry.data.categories &&
-            entry.data.categories.map((cat) => (
-              <span class="hidden" data-pagefind-meta="category">
-                {cat}
-              </span>
-            ))
+          (
+            <span class="hidden" data-pagefind-meta="category">
+              {entry.data.category}
+            </span>
+          )
         }
       </div>
     </header>

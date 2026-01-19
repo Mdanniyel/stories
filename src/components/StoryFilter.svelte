@@ -24,7 +24,7 @@
     [...new Set(allStories.flatMap((s) => s.data.tags || []))].sort(),
   );
   let uniqueCategories = $derived(
-    [...new Set(allStories.flatMap((s) => s.data.categories || []))].sort(),
+    [...new Set(allStories.map((s) => s.data.category).filter(Boolean))].sort(),
   );
 
   // לוגיקת הסינון
@@ -37,7 +37,7 @@
         ? (story.data.tags || []).includes(selectedTag)
         : true;
       const matchCategory = selectedCategory
-        ? (story.data.categories || []).includes(selectedCategory)
+        ? story.data.category === selectedCategory
         : true;
 
       // אם יש תוצאות חיפוש מ-Pagefind, נבדוק אם הסלאג קיים בהן
@@ -262,13 +262,11 @@
             >
           </div>
 
-          {#if story.data.categories && story.data.categories.length > 0}
+          {#if story.data.category}
             <div class="flex gap-2 flex-wrap text-xs">
-              {#each story.data.categories as cat}
-                <span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">
-                  {cat}
-                </span>
-              {/each}
+              <span class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">
+                {story.data.category}
+              </span>
             </div>
           {/if}
         </div>
