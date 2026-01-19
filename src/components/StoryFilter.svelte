@@ -240,7 +240,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {#each paginatedStories as story}
       <a
-        href={`/stories/${story.slug}`}
+        href={`${import.meta.env.BASE_URL}${story.slug}`}
         class="group block p-6 bg-white border border-gray-200 rounded-xl hover:shadow-lg hover:border-indigo-300 transition duration-200 no-underline"
       >
         <h2

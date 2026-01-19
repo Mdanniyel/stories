@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://Mdanniyel.github.io',
-  base: '/stories',
+  base: process.env.NODE_ENV === 'production' ? '/stories/' : '/',
   integrations: [svelte()],
 
   vite: {
